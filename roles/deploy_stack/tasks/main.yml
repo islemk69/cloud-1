@@ -31,6 +31,12 @@
     dest: "{{ deploy_dir }}/docker-compose.yml"
     mode: '0644'
 
+- name: Copier le fichier Docker Compose
+  copy:
+    src: files/wp-config.php
+    dest: "{{ deploy_dir }}/wp-config.php"
+    mode: '0644'
+
 - name: Copier le fichier d'environnement
   copy:
     src: files/.env
