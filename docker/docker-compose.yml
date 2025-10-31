@@ -39,7 +39,7 @@ services:
       PMA_ARBITRARY: 1
       PMA_HOST: db
     volumes:
-      - pma_data:/var/www/html  # 🔥 propre volume phpMyAdmin
+      - pma_data:/var/www/html
     networks:
       - wp-network
 
@@ -54,7 +54,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - wp_data:/var/www/html/wordpress
-      - pma_data:/var/www/html/phpmyadmin  # 🔥 montage explicite
+      - pma_data:/var/www/html/phpmyadmin 
     networks:
       - wp-network
 
