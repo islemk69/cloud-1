@@ -51,8 +51,10 @@ services:
       - phpmyadmin
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
       - wp_data:/var/www/html/wordpress
       - pma_data:/var/www/html/phpmyadmin 
     networks:

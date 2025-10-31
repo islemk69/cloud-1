@@ -1,0 +1,44 @@
+- name: Créer dossier SSL
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    mode: '0755'
+
+- name: Générer certificat auto-signé si absent
+  command: >
+    openssl req -x509 -newkey rsa:4096 -nodes -days 365
+    -keyout /etc/nginx/ssl/selfsigned.key
+    -out /etc/nginx/ssl/selfsigned.crt
+    -subj "/CN={{ inventory_hostname }}"
+  args:
+    creates: /etc/nginx/ssl/selfsigned.crt
+
+- name: Créer le dossier de déploiement
+  file:
+    path: "{{ deploy_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Copier la configuration Nginx
+  copy:
+    src: files/nginx.conf
+    dest: "{{ deploy_dir }}/nginx.conf"
+    mode: '0644'
+
+- name: Copier le fichier Docker Compose
+  copy:
+    src: files/docker-compose.yml
+    dest: "{{ deploy_dir }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Copier le fichier d'environnement
+  copy:
+    src: files/.env
+    dest: "{{ deploy_dir }}/.env"
+    mode: '0600'
+  when: lookup('file', 'files/.env', errors='ignore') is not none
+
+- name: Lancer les conteneurs Docker
+  command: docker compose up -d
+  args:
+    chdir: "{{ deploy_dir }}"

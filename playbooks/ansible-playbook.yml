@@ -3,6 +3,6 @@
   hosts: cloud1
   become: yes
   roles:
-    - setup_docker
-    # - deploy_stack
+    # - setup_docker
+    - deploy_stack
     # - security
